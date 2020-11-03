@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  	<script src="https://cdnjs.deepai.org/deepai.min.js"></script>
+<style type="text/css">
+	  * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+
+        html,body  {  
+	       height: 100%;	          
+	    }
+
+        body {
+	      flex-direction: column;
+	      display: flex;   
+	    }
+	    .content {
+	      flex: 1 0 auto;      
+	      padding-top: 5%;
+	    }
+
+	    #result {
+		  display: block;
+		  max-width: 90%;
+		  max-height: 60%;
+		  margin-left: auto;
+		  margin-right: auto;
+		  border-radius: 4px
+		}
+
+	    .app-footer {
+		  flex-shrink: 0;
+		  background: white;
+		  color: #444;
+		  padding: 10px;
+		  font-size: 14px;
+		  margin-top: 10px;
+		  border-radius: 20px;
+		}
+
+		.app-footer ul {
+		  display: flex;
+		  align-items: center;
+		  justify-content: space-around;
+		  text-decoration: none; 
+		}
+
+
+		.app-footer ul li {
+		  text-decoration: none;
+		  display: flex;
+		  flex-direction: column;
+		  align-items: center;
+		  color: #00ffff;
+		  cursor: pointer;
+		  font-size: 40px;	  
+		}
+		#hide {
+			display: none;
+		}
+		#download {
+			display: none;
+		}
+		#snackbar {
+		  visibility: hidden;
+		  min-width: 250px;
+		  margin-left: -125px;
+		  background-color: #333;
+		  color: #fff;
+		  text-align: center;
+		  border-radius: 2px;
+		  padding: 16px;
+		  position: fixed;
+		  z-index: 1;
+		  left: 50%;
+		  bottom: 30px;
+		  font-size: 17px;
+		}
+
+		#snackbar.show {
+		  visibility: visible;
+		  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+		  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+		}
+
+		@-webkit-keyframes fadein {
+		  from {bottom: 0; opacity: 0;} 
+		  to {bottom: 30px; opacity: 1;}
+		}
+
+		@keyframes fadein {
+		  from {bottom: 0; opacity: 0;}
+		  to {bottom: 30px; opacity: 1;}
+		}
+
+		@-webkit-keyframes fadeout {
+		  from {bottom: 30px; opacity: 1;} 
+		  to {bottom: 0; opacity: 0;}
+		}
+
+		@keyframes fadeout {
+		  from {bottom: 30px; opacity: 1;}
+		  to {bottom: 0; opacity: 0;}
+		}
+		  
+</style>
+<script src="/this.js"></script>
+<script src="/FileSaver.min.js"></script>
+</head>
+<body>
+	
+	<div class="content">		
+		<img src="" id="result"> 		         
+	</div>
+	<div id="snackbar">Please Wait...</div>
+
+	<footer class="app-footer">
+      <ul>
+        <li>
+        	<label>
+        		<i class="fa fa-camera"></i>
+	        	<input type="file" 
+	            id="capture" 
+	            accept="image/*,video/*,audio/*" 
+	            capture 
+	            multiple style="display:none"/>        		
+        	</label>       	         
+        </li>
+        <div id="hide">
+        	<li>
+        	    <i class="fa fa-check" onclick = "Hello()"></i>
+            </li>        	
+        </div>  
+        <div id="download">
+        	<li>
+        	    <i class="fa fa-download" onclick = "Download()"></i>
+            </li>        	
+        </div>     
+      </ul>
+    </footer>
+
+<script>
+        
+        document.addEventListener('DOMContentLoaded', (ev)=>{
+            let input = document.getElementById('capture');
+            
+            input.addEventListener('change', (ev)=>{
+                console.dir( input.files[0] );
+                if(input.files[0].type.indexOf("image/") > -1){
+                    let img = document.getElementById('result');
+                     img.src = window.URL.createObjectURL(input.files[0]);
+                        let hide = document.getElementById('hide');
+    					hide.style.display = 'flex';
+    					let download = document.getElementById('download');
+                        download.style.display = 'none';
+                }               
+                
+            })
+            
+        })
+
+
+        let img = document.getElementById('result');
+ 
+		
+		function Download() {
+		    let imagePath = img.getAttribute('src');
+		    let fileName = getFileName(imagePath);
+		    saveAs(imagePath, fileName);
+		    console.log("work");
+		}
+		 
+		function getFileName(str) {
+		    return str.substring(str.lastIndexOf('/') + 1)
+		}
+
+		function Function() {
+		  var x = document.getElementById("snackbar");
+		  x.className = "show";
+		  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+		}
+
+    </script>
+    
+</body>
+
+</html>
